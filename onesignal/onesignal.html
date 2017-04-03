@@ -1,0 +1,44 @@
+<script type="text/javascript">
+    RED.nodes.registerType('onesignal',{
+        category: 'social',
+        color: '#a6bbcf',
+        defaults: {
+            name: {value:""},
+            config: {value:"", type:"onesignal-config"},
+            defaultTitle: {value:"Hello"},
+            defaultMessage: {value:"How is your day?"},
+        },
+        inputs:1,
+        outputs:0,
+        icon: "inject.png",
+        label: function() {
+            return this.name||"onesignal";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="onesignal">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-config"><i class="icon-tag"></i> OneSignal App ID</label>
+        <input type="text" id="node-input-config" placeholder="App ID">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-defaultTitle"><i class="icon-tag"></i> Default Title </label>
+        <input type="text" id="node-input-defaultTitle" placeholder="Default Title">
+    </div>
+    <div class="form-row">
+        <label for="node-input-defaultMessage"><i class="icon-tag"></i> Default Message </label>
+        <input type="text" id="node-input-defaultMessage" placeholder="Default Message">
+    </div>
+
+</script>
+
+<script type="text/x-red" data-help-name="lower-case">
+    <p>A simple node that converts the message payloads into all lower-case characters</p>
+</script>
