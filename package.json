@@ -5,5 +5,11 @@
   "main": "index.js",
   "repository": "https://github.com/nachiket-p/node-red-contrib-onesignal",
   "author": "Nachiket Patel",
-  "license": "MIT"
+  "license": "MIT",
+  "node-red": {
+    "nodes": {
+      "onesignal": "onesignal/onesignal.js",
+      "onesignalConfig": "onesignal/onesignal-config.js"
+    }
+  }
 }
