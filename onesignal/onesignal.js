@@ -5,7 +5,7 @@ module.exports = function (RED) {
     console.log("CONFIG: ", config)
     RED.nodes.createNode(this, config);
     var oneSignalConfig = RED.nodes.getNode(config.config);
-    
+    var [web, android, ios, segment] = [config.web, config.android, config.ios, config.segments];
     var node = this;
     var headers = {
       "Content-Type": "application/json; charset=utf-8",
@@ -21,9 +21,8 @@ module.exports = function (RED) {
     };
 
     this.on('input', function (msg) {
-      console.log('INSIDE input');
-      console.log('input msg:-', msg);
-      
+      console.log('INSIDE INPUT \n input msg:-', msg);
+
       var req = https.request(options, function (res) {
         res.on('data', function (data) {
           var response = JSON.parse(data);
@@ -37,7 +36,6 @@ module.exports = function (RED) {
             node.log("Notification SENT SUCCESSFULLY");
             node.status({ fill: "green", shape: "ring", text: "SENT!" });
           }
-          //orignalRes.send(JSON.stringify(response))
         });
 
         req.on('error', function (e) {
@@ -46,14 +44,9 @@ module.exports = function (RED) {
           node.status({ fill: "red", shape: "ring", text: "OneSignal ERROR" });
         });
       });
-  
-      var title = msg.payload.title || config.title;
-      var text =  msg.payload.content || config.message;
-      var web = config.web;
-      var android = config.android;
-      var ios = config.ios;
-      var segment = config.segments;
 
+      var title = msg.payload.title || config.title;
+      var text = msg.payload.content || config.message;
       var messageJson = {
         app_id: oneSignalConfig.appId,
         headings: { "en": title },
@@ -70,14 +63,9 @@ module.exports = function (RED) {
       if (ios) {
         messageJson.isIos = true;
       }
-      if (!web && !android && !ios) {
-        console.log('You didn`t select any platform');
-        req.end();
-      } else {
-        console.log('OneSignal Message:- ', messageJson);
-        req.write(JSON.stringify(messageJson));
-        req.end();
-      }
+      console.log('OneSignal Message:- ', messageJson);
+      req.write(JSON.stringify(messageJson));
+      req.end();
     });
   }
   RED.nodes.registerType("onesignal", OneSignalNode);

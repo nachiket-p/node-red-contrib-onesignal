@@ -14,7 +14,7 @@
         },
         inputs: 1,
         outputs: 0,
-        icon: "inject.png",
+        icon: "onesignal.png",
         label: function () {
             return this.name || "onesignal";
         },
@@ -85,7 +85,6 @@
 
 </script>
 
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> <!--for device icon-->
 <script type="text/x-red" data-template-name="onesignal">
     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
@@ -107,7 +106,7 @@
     </div>
 
     <div class="form-row">
-        <label for="node-input-platform"><i class="material-icons">devices</i> <span data-i18n="platfom"></span>Platform</label>
+        <label for="node-input-platform"><i class="icon-tag"></i> <span data-i18n="platfom"></span>Platform</label>
 
         <input type="checkbox" id="node-input-web" style="text-align:end; width:20px !important; height:20px">
         <label for="node-input-web" style="width:50px">WEB</label>
@@ -128,10 +127,11 @@
 
 <script type="text/x-red" data-help-name="onesignal">
     <h1>
-        OneSignal
+        Node-RED node for push notifications.
     </h1>
     <p>
-        A node which is capable enough to send push notification on following platforms.
+        A node for sending push notifications using OneSignal. It currently supports subset of the OneSignal features. Right now,
+        It allows to send notification on following platform:
         <ul>
             <li>
                 <b>WEB</b>
@@ -159,7 +159,7 @@
     </div>
     <div>
         <b>Platform</b>
-        <div> To only send to specific platform, you may check only that platform. </br> select at least one platform to send push notification.</div></br>
+        <div> To only send to specific platform, you may check only that platform. </br> Don't check any platform to send all platform.</div></br>
     </div>
     <div>
         <b>AddSegment</b>
