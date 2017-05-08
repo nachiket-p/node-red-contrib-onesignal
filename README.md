@@ -3,7 +3,8 @@
   Node-RED node for push notifications.
 </h3>
 <p>
-    A node which is capable enough to send push notification on following platforms.
+    A node for sending push notifications using OneSignal. It currently supports subset of the OneSignal features.  
+    Right now, It allows to send notification on following platform: 
     <ul>
         <li>
             <b>WEB</b>
@@ -16,6 +17,7 @@
         </li>
     </ul>
 </p>
+
 <h2>Node Configuration</h2>
 <div>
     <b>OneSignal App Id</b>
@@ -36,9 +38,9 @@
 <div>
     <b>AddSegment</b>
     <div> you simply specify which segments you want to send to.</div>
-</div>Ï
+</div>
 
-ToDo:
+#### TODO: 
 1. Add Channel Filters
 2. Add Device Type Filters
 3. Allow to sent to set of specific users
