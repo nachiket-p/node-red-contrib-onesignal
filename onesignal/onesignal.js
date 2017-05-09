@@ -2,10 +2,10 @@ var https = require('https');
 
 module.exports = function (RED) {
   function OneSignalNode(config) {
-    console.log("CONFIG: ", config)
     RED.nodes.createNode(this, config);
     var oneSignalConfig = RED.nodes.getNode(config.config);
-    var [web, android, ios, segment] = [config.web, config.android, config.ios, config.segments];
+    var [web, android, ios, segment, targetType] = [config.web, config.android, config.ios, config.segments, config.targetType];
+
     var node = this;
     var headers = {
       "Content-Type": "application/json; charset=utf-8",
@@ -21,8 +21,6 @@ module.exports = function (RED) {
     };
 
     this.on('input', function (msg) {
-      console.log('INSIDE INPUT \n input msg:-', msg);
-
       var req = https.request(options, function (res) {
         res.on('data', function (data) {
           var response = JSON.parse(data);
@@ -47,13 +45,13 @@ module.exports = function (RED) {
 
       var title = msg.payload.title || config.title;
       var text = msg.payload.content || config.message;
+      var playerId = [];
+      playerId = msg.payload.playerId || config.player;
       var messageJson = {
         app_id: oneSignalConfig.appId,
         headings: { "en": title },
         contents: { "en": text },
-        included_segments: segment
       };
-
       if (web) {
         messageJson.isAnyWeb = true;
       }
@@ -62,6 +60,11 @@ module.exports = function (RED) {
       }
       if (ios) {
         messageJson.isIos = true;
+      }
+      if (targetType === "segment") {
+        messageJson.included_segments = segment;
+      } else {
+        messageJson.include_player_ids = playerId;
       }
       console.log('OneSignal Message:- ', messageJson);
       req.write(JSON.stringify(messageJson));

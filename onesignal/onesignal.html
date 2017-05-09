@@ -10,7 +10,9 @@
             web: { value: true },
             android: { value: true },
             ios: { value: true },
+            targetType: { value: "segment" },
             segments: { value: ["ALL"] },
+            player: { value: [""] }
         },
         inputs: 1,
         outputs: 0,
@@ -20,9 +22,9 @@
         },
         oneditprepare: function () {
             var self = this;
+            self.targetType = self.targetType || "segment";
             $("#node-input-segment").css('min-height', '200px').css('min-width', '400px').editableList({
                 addItem: function (row, index, data) {
-                    debugger;
                     var segment = data.segment || 'ALL';
                     var type = data.type || 'ALL';
                     var dynRow = $(`<div></div>`).attr('id', 'rule-' + index).appendTo(row);
@@ -68,6 +70,26 @@
                 }
                 $("#node-input-segment").editableList('addItem', { 'segment': segment, 'type': type });
             }
+            $(document).ready(function () {
+                $("#node-segment").hide();
+                $("#node-player").hide();
+                var $radios = $('input:radio[name=targetType]');
+                $radios.filter('[value=' + self.targetType + ']').prop('checked', true);
+                if (self.targetType === "segment") {
+                    $("#node-segment").show();
+                } else {
+                    $("#node-player").show();
+                }
+                $radios.change(function () {
+                    if ($('#node-input-segmentCheck').is(':checked')) {
+                        $("#node-segment").show();
+                        $("#node-player").hide();
+                    } else {
+                        $("#node-segment").hide();
+                        $("#node-player").show();
+                    }
+                });
+            });
         },
         oneditsave: function () {
             var segments = $("#node-input-segment").editableList('items');
@@ -80,6 +102,11 @@
                 console.log('segmentObj:- ', segmentObj);
                 node.segments.push(segmentObj);
             });
+            if ($('#node-input-segmentCheck').is(':checked')) {
+                node.targetType = "segment";
+            } else {
+                node.targetType = "player";
+            }
         }
     });
 
@@ -100,6 +127,7 @@
         <label for="node-input-title"><i class="icon-bookmark"></i> Title</label>
         <input type="text" id="node-input-title" placeholder="Title">
     </div>
+
     <div class="form-row">
         <label for="node-input-message"><i class="fa fa-envelope"></i> Message</label>
         <input type="text" id="node-input-message" placeholder="Message">
@@ -118,9 +146,24 @@
         <label for="node-input-ios" style="width:50px">iOS</label>
     </div>
 
-    <div class="form-row node-input-segment-row">
-        <label for="node-input-segment"><i class="fa fa-bars"></i> AddSegment</label>
+    <div class="form-row">
+        <label for="node-input-targetType"><i class="icon-tag"></i> <span data-i18n="platfom"></span>Target</label>
+
+        <input type="radio" name="targetType" value="segment" id="node-input-segmentCheck" style="text-align:end; width:20px !important; height:20px">
+        <label for="node-input-segmentCheck" style="width:80px">Segment</label>
+
+        <input type="radio" name="targetType" value="player" id="node-input-playerCheck" style="text-align:end; width:20px !important; height:20px">
+        <label for="node-input-playerCheck" style="width:80px">PlayerIds</label>
+    </div>
+
+    <div class="form-row node-input-segment-row" id="node-segment">
+        <label for="node-input-segment"><i class="fa fa-bars"></i> Segment</label>
         <ol id="node-input-segment"></ol>
+    </div>
+
+    <div class="form-row" id="node-player">
+        <label for="node-input-player"><i class="icon-bookmark"></i> PlayerId</label>
+        <input type="text" id="node-input-player" placeholder="msg.payload.playerId">
     </div>
 
 </script>
@@ -147,22 +190,40 @@
     <h2>Node Configuration</h2>
     <div>
         <b>OneSignal App Id</b>
-        <div> Configure OneSignal app id and Rest api key. </div></br>
+        <div> Configure OneSignal app id and Rest api key. </div>
+        </br>
     </div>
     <div>
         <b>Title</b>
-        <div> It containes title of push notification. </br> You can add title from <code>msg.payload.title</code> or can type manually.</div></br>
+        <div> It containes title of push notification. </br> You can add title from <code>msg.payload.title</code> or can type
+            manually.
+        </div>
+        </br>
     </div>
     <div>
         <b>Message</b>
-        <div> It containes body content of message. </br> You can add message content from <code>msg.payload.content</code> or can type manually.</div></br>
+        <div> It containes body content of message. </br> You can add message content from <code>msg.payload.content</code> or
+            can type manually.</div>
+        </br>
     </div>
     <div>
         <b>Platform</b>
-        <div> To only send to specific platform, you may check only that platform. </br> Don't check any platform to send all platform.</div></br>
+        <div> To only send to specific platform, you may check only that platform. </br> Don't check any platform to send all platform.</div>
+        </br>
     </div>
     <div>
-        <b>AddSegment</b>
-        <div> you simply specify which segments you want to send to.</div>
+        <b>Target</b>
+        <div> Select target user whom you wants to send notification.
+            <ul>
+                <li>
+                    <b>Segment</b>
+                    <div> you simply specify which segments you want to send to.</div>
+                </li>
+                <li>
+                    <b>PlayerIds</b>
+                    <div> You can add playerId(array of string) from <code>msg.payload.playerId</code> or can type manulally.</div>
+                </li>
+            </ul>
+        </div>
     </div>
 </script>

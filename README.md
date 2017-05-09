@@ -23,8 +23,13 @@ You can add message content from `msg.payload.content` or can type manually.
 To only send to specific platform, you may check only that platform.  
 Don't check any platform to send all platform.  
 
-***AddSegment***  
-You simply specify which segments you want to send to.
+***Target***  
+Select target user whom you wants to send notification.  
+* Segment  
+You simply specify which segments you want to send to.  
+* PlayerIds  
+You can add playerId(array of string) from `msg.payload.playerId` or can type manulally.
+
 
 
 #### TODO: 
