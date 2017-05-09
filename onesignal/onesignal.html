@@ -195,15 +195,18 @@
     </div>
     <div>
         <b>Title</b>
-        <div> It containes title of push notification. </br> You can add title from <code>msg.payload.title</code> or can type
-            manually.
+        <div> It containes title of push notification. </br>You can add title from <code>msg.payload.title</code> or can type manually.
+            </br>
+            <b>Note:-</b> if title comes from <code>msg.payload.title</code> then leave editText blank.
         </div>
         </br>
     </div>
     <div>
         <b>Message</b>
         <div> It containes body content of message. </br> You can add message content from <code>msg.payload.content</code> or
-            can type manually.</div>
+            can type manually.
+            </br> <b>Note:-</b> if message comes from <code>msg.payload.content</code> then leave editText blank.
+        </div>
         </br>
     </div>
     <div>
@@ -221,7 +224,10 @@
                 </li>
                 <li>
                     <b>PlayerIds</b>
-                    <div> You can add playerId(array of string) from <code>msg.payload.playerId</code> or can type manulally.</div>
+                    <div> You can add playerId(array of string) from <code>msg.payload.playerId</code> or can type manulally.
+                        </br> <b>Note:-</b> if playerId comes from <code>msg.payload.playerId</code> then leave editText
+                        blank.
+                    </div>
                 </li>
             </ul>
         </div>
