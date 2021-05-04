@@ -25,10 +25,16 @@ module.exports = function (RED) {
         res.on('data', function (data) {
           var response = JSON.parse(data);
           if (response.errors) {
-            response.errors.forEach(function (err) {
-              console.log("ONESIGNAL Responce Error:", err);
-              node.error("ONESIGNAL Responce Error", err);
-            })
+            if (Array.isArray(response.errors)) {
+              response.errors.forEach(function (err) {
+                console.log("ONESIGNAL Responce Error:", err);
+                node.error("ONESIGNAL Responce Error", err);
+              })
+            }
+            if (typeof response.errors === 'string' || response.errors instanceof String) {
+              console.log("ONESIGNAL Responce Error:", response.errors);
+              node.error("ONESIGNAL Responce Error", response.errors);
+            }
             node.status({ fill: "red", shape: "ring", text: "OneSignal ERROR" });
           } else {
             node.log("Notification SENT SUCCESSFULLY");
